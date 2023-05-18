@@ -6,4 +6,6 @@ import com.hotel.bill.dto.Employee;
 
 public interface EmployeeRepo extends JpaRepository<Employee, Integer> {
 
+	public Employee findByEmail(String mail);
+	
 }

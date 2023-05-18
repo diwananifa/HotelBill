@@ -1,5 +1,9 @@
 package com.hotel.bill.exception;
 
-public class NoSuchEmailFoundException {
+public class NoSuchEmailFoundException extends RuntimeException {
 
+	public String getMessage() {
+		return "email not found";
+	}
+	
 }
