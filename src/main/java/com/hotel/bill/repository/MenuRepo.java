@@ -6,4 +6,5 @@ import com.hotel.bill.dto.Menu;
 
 public interface MenuRepo extends JpaRepository<Menu, Integer> {
 
+	
 }
