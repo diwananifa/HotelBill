@@ -4,8 +4,12 @@ public class NoSuchIdFoundException extends RuntimeException {
 	
 	String message="id is not found";
 
-	public NoSuchIdFoundException(String message) {
+	public String getMessage() {
+		return message;
 	}
+	
+	public NoSuchIdFoundException(String message) {
+	
 
 		this.message = message;
 	}
@@ -13,4 +17,5 @@ public class NoSuchIdFoundException extends RuntimeException {
 	public NoSuchIdFoundException() {
 		
 	}
+
 }
