@@ -17,6 +17,7 @@ import com.hotel.bill.dto.Item;
 import com.hotel.bill.dto.Product;
 import com.hotel.bill.exception.NoSuchDataFoundException;
 import com.hotel.bill.exception.NoSuchIdFoundException;
+import com.hotel.bill.exception.NoSuchNameFoundException;
 import com.hotel.bill.util.ResponseStructure;
 
 @Service
@@ -27,33 +28,35 @@ public class ProductService {
 	CustomerDao customerDao;
 	@Autowired
 	ItemDao itemDao;
-	public ResponseEntity<ResponseStructure<Product>> saveProduct(int c_id,int i_id,int qty) {
-		Customer customer=customerDao.getCustomerById(c_id);
-		Item item=itemDao.getItemById(i_id);
+	public ResponseEntity<ResponseStructure<Product>> saveProduct(int cusomerId,int itemId,int qty) {
+		Customer customer=customerDao.getCustomerById(cusomerId);
+		Item item=itemDao.getItemById(itemId);
 		if (customer!=null && item!=null) {
 			Product product=new Product();
-			product.setP_name(item.getI_name());
-			product.setP_price(item.getI_price());
-			product.setP_totalPrice(qty*item.getI_price());
+			product.setProductName(item.getItemName());
+			product.setProductPrice(item.getItemPrice());
+			product.setQty(qty);
+			product.setProductTotalPrice(qty*item.getItemPrice());
+			product.setCustomer(customer);
 			product=productDao.saveProduct(product);
 			List<Product> products=customer.getProducts();
 			if (products!=null) {
 				products=new ArrayList<>();
 			}
 			products.add(product);
-			customer.setTotalBillAmount(customer.getTotalBillAmount()+(qty*item.getI_price()));
+			customer.setTotalBillAmount(customer.getTotalBillAmount()+(qty*item.getItemPrice()));
 			customer.setProducts(products);
 			customerDao.updateCustomer(customer);
 			ResponseStructure<Product> responseStructure=new ResponseStructure();
 			ResponseEntity<ResponseStructure<Product>> entity=new ResponseEntity<ResponseStructure<Product>>(responseStructure,HttpStatus.CREATED);
 			responseStructure.setStatuscode(HttpStatus.CREATED.value());
-			responseStructure.setMessage("product object saved sucessfully");
+			responseStructure.setMessage("product details saved sucessfully");
 			responseStructure.setData(product);
 			return entity;
 		} else if(customer==null) {
-			throw new NoSuchIdFoundException("customer id not found");
+			throw new NoSuchIdFoundException("customer id is not found");
 		}else {
-			throw new NoSuchIdFoundException("item id not found");
+			throw new NoSuchIdFoundException("item id is not found");
 		}
 	}
 	public ResponseEntity<ResponseStructure<Product>> getProductById(int id) {
@@ -62,7 +65,7 @@ public class ProductService {
 			ResponseStructure<Product> responseStructure=new ResponseStructure();
 			ResponseEntity<ResponseStructure<Product>> entity=new ResponseEntity<ResponseStructure<Product>>(responseStructure,HttpStatus.OK);
 			responseStructure.setStatuscode(HttpStatus.OK.value());
-			responseStructure.setMessage("product details fetched sucessfully");
+			responseStructure.setMessage("product details fetched successfully");
 			responseStructure.setData(product);
 			return entity;
 		} else {
@@ -75,11 +78,11 @@ public class ProductService {
 			ResponseStructure<Product> responseStructure=new ResponseStructure();
 			ResponseEntity<ResponseStructure<Product>> entity=new ResponseEntity<ResponseStructure<Product>>(responseStructure,HttpStatus.OK);
 			responseStructure.setStatuscode(HttpStatus.OK.value());
-			responseStructure.setMessage("product object saved sucessfully");
+			responseStructure.setMessage("product details fetched successfully");
 			responseStructure.setData(product);
 			return entity;
 		} else {
-			throw new NoSuchIdFoundException("product details fetched sucessfully");
+			throw new NoSuchNameFoundException("product name is not found");
 		}
 	}
 	public ResponseEntity<ResponseStructure<List<Product>>> getAllProduct(){
@@ -99,7 +102,7 @@ public class ProductService {
 		Product product=productDao.getProductById(id);
 		if(product!=null) {
 			Customer customer= product.getCustomer();
-			customer.setTotalBillAmount(customer.getTotalBillAmount()-product.getP_totalPrice());
+			customer.setTotalBillAmount(customer.getTotalBillAmount()-product.getProductTotalPrice());
 			customerDao.updateCustomer(customer);
 			ResponseStructure<String> responseStructure=new ResponseStructure();
 			ResponseEntity<ResponseStructure<String>> entity=new ResponseEntity<ResponseStructure<String>>(responseStructure,HttpStatus.NO_CONTENT);
@@ -115,10 +118,11 @@ public class ProductService {
 	public ResponseEntity<ResponseStructure<Product>> updateProduct(int id,int qty) {
 		Product product=productDao.getProductById(id);
 		if(product!=null) {
-			double new_totalPrice=(qty*product.getP_price())-product.getP_totalPrice();
+			double new_totalPrice=(qty*product.getProductPrice())-product.getProductTotalPrice();
 			product.setQty(qty);
-			product.setP_totalPrice(qty*product.getP_price());
+			product.setProductTotalPrice(qty*product.getProductPrice());
 			Customer customer=product.getCustomer();
+			System.err.println(customer.getTotalBillAmount());
 			customer.setTotalBillAmount(customer.getTotalBillAmount()+new_totalPrice);
 			customerDao.updateCustomer(customer);
 			ResponseStructure<Product> responseStructure=new ResponseStructure();

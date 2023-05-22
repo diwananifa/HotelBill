@@ -3,6 +3,7 @@ package com.hotel.bill.contoller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +16,12 @@ import com.hotel.bill.service.CustomerService;
 import com.hotel.bill.util.ResponseStructure;
 
 @RestController
+@CrossOrigin("http://127.0.0.1:5500")
 public class CustomerContoller {
 
 	@Autowired
 	CustomerService customerService;
-
+	
 	@PostMapping("savecustomer")
 	public ResponseEntity<ResponseStructure<Customer>> saveCustomer(@RequestBody Customer customer) {
 		return customerService.saveCustomer(customer);
@@ -30,15 +32,15 @@ public class CustomerContoller {
 		return customerService.getCustomerById(id);
 	}
 
-//	@GetMapping("getcustomerbyname")
-//	public ResponseEntity<ResponseStructure<Customer>> getCustomerByName(@RequestParam String name) {
-//		return customerService.getCustomerByName(name);
-//	}
-//
-//	@GetMapping("getcustomerbyphone")
-//	public ResponseEntity<ResponseStructure<Customer>> getCustomerByPhone(@RequestParam Long phone) {
-//		return customerService.getCustomerByPhone(phone);
-//	}
+	@GetMapping("getcustomerbyname")
+	public ResponseEntity<ResponseStructure<Customer>> getCustomerByName(@RequestParam String name) {
+		return customerService.getCustomerByName(name);
+	}
+
+	@GetMapping("getcustomerbyphone")
+	public ResponseEntity<ResponseStructure<Customer>> getCustomerByPhone(@RequestParam Long phone) {
+		return customerService.getCustomerByPhone(phone);
+	}
 
 	@GetMapping("getallcustomer")
 	public ResponseEntity<ResponseStructure<List<Customer>>> getAllCustomer() {

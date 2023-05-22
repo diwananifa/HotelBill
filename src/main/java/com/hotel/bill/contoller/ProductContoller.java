@@ -26,8 +26,8 @@ public class ProductContoller {
 	@Autowired
 	ProductService productService;
 	@PostMapping("saveproduct")
-	public ResponseEntity<ResponseStructure<Product>> saveProduct(@RequestParam int c_id,@RequestParam int i_id,@RequestParam int qty) {
-		return productService.saveProduct(c_id, i_id, qty);
+	public ResponseEntity<ResponseStructure<Product>> saveProduct(@RequestParam int customerId,@RequestParam int itemId,@RequestParam int qty) {
+		return productService.saveProduct(customerId, itemId, qty);
 	}
 	@GetMapping("getproductbyid")
 	public ResponseEntity<ResponseStructure<Product>> getProductById(@RequestParam int id) {

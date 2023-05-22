@@ -5,6 +5,6 @@ import com.hotel.bill.dto.Customer;
 
 public interface CustomerRepo extends JpaRepository<Customer, Integer> {
 	
-	//Customer findByPhone(Long phoneno);
-	//Customer findByName(String name);
+	Customer findByCustomerPhoneNo(Long customerPhoneNo);
+	Customer findByCustomerName(String customerName);
 }

@@ -26,7 +26,7 @@ public class ProductDao {
 		}
 	}
 	public Product getProductByName(String name) {
-		return productRepo.getProductByName(name);
+		return productRepo.findByProductName(name);
 //		if (product!=null) {
 //			return product;
 //		}

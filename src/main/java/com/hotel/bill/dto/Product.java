@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,12 +18,13 @@ import lombok.Setter;
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int p_id;
-	private String p_name;
-	private double p_price;
+	private int productId;
+	private String productName;
+	private double productPrice;
 	private int qty;
-	private double p_totalPrice;
+	private double productTotalPrice;
 	@ManyToOne
 	@JoinColumn
+	@JsonBackReference
 	private Customer customer;
 }
