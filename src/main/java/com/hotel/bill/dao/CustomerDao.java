@@ -26,13 +26,13 @@ public class CustomerDao {
 		}
 	}
 
-//	public Customer getCustomerByName(String name) {
-//		return customerRepo.findByName(name);
-//	}
+	public Customer getCustomerByName(String name) {
+		return customerRepo.findByCustomerName(name);
+	}
 
-//	public Customer getCustomerByPhone(Long phone) {
-//		return customerRepo.findByPhone(phone);
-//	}
+	public Customer getCustomerByPhone(Long phone) {
+		return customerRepo.findByCustomerPhoneNo(phone);
+	}
 
 	public List<Customer> getAllCustomer() {
 		return customerRepo.findAll();

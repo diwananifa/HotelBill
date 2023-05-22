@@ -1,5 +1,6 @@
 package com.hotel.bill.exceptionhandler;
 
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +17,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.hotel.bill.exception.DuplicateEmailFoundException;
-import com.hotel.bill.exception.NoDataFoundException;
+import com.hotel.bill.exception.NoSuchDataFoundException;
 import com.hotel.bill.exception.NoSuchEmailFoundException;
 import com.hotel.bill.exception.NoSuchIdFoundException;
+import com.hotel.bill.exception.NoSuchNameFoundException;
 import com.hotel.bill.util.ResponseStructure;
 
 @RestControllerAdvice
@@ -29,7 +31,7 @@ public class ApplicationContoller extends ResponseEntityExceptionHandler {
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 
 		List<ObjectError> errors = ex.getAllErrors();
-		Map<String, String> map = new LinkedHashMap<>();
+		Map<String, String> map = new LinkedHashMap();
 		for (ObjectError error : errors) {
 			String message = error.getDefaultMessage();
 			String field = ((FieldError) error).getField();
@@ -71,9 +73,21 @@ public class ApplicationContoller extends ResponseEntityExceptionHandler {
 
 		return entity;
 	}
+	
+	@ExceptionHandler(NoSuchNameFoundException.class)
+	public ResponseEntity<ResponseStructure<String>> noSuchNameFoundException(NoSuchNameFoundException e) {
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		ResponseEntity<ResponseStructure<String>> entity = new ResponseEntity<>(structure, HttpStatus.NOT_FOUND);
 
-	@ExceptionHandler(NoDataFoundException.class)
-	public ResponseEntity<ResponseStructure<String>> noDataFoundException(NoDataFoundException e) {
+		structure.setMessage("Not found");
+		structure.setStatuscode(HttpStatus.NOT_FOUND.value());
+		structure.setData(e.getMessage());
+
+		return entity;
+	}
+
+	@ExceptionHandler(NoSuchDataFoundException.class)
+	public ResponseEntity<ResponseStructure<String>> noSuchDataFoundException(NoSuchDataFoundException e) {
 		ResponseStructure<String> structure = new ResponseStructure<>();
 		ResponseEntity<ResponseStructure<String>> entity = new ResponseEntity<ResponseStructure<String>>(structure,
 				HttpStatus.NOT_FOUND);

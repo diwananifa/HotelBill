@@ -25,7 +25,7 @@ public class ItemDao {
 		}
 	}
 	public Item getItemByName(String name) {
-		return itemRepo.findByName(name);
+		return itemRepo.findByItemName(name);
 	}
 	public List<Item> getAllItem(){
 		return itemRepo.findAll();

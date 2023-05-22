@@ -1,5 +1,6 @@
 package com.hotel.bill.exception;
 
+
 public class NoSuchDataFoundException extends RuntimeException {
 	String message = "id not found";
 
@@ -16,4 +17,5 @@ public class NoSuchDataFoundException extends RuntimeException {
 
 		return message;
 	}
+	  
 }

@@ -1,5 +1,7 @@
 package com.hotel.bill.service;
 
+
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.hotel.bill.dao.EmployeeDao;
 import com.hotel.bill.dto.Employee;
 import com.hotel.bill.exception.DuplicateEmailFoundException;
-import com.hotel.bill.exception.NoDataFoundException;
+import com.hotel.bill.exception.NoSuchDataFoundException;
 import com.hotel.bill.exception.NoSuchEmailFoundException;
 import com.hotel.bill.exception.NoSuchIdFoundException;
 import com.hotel.bill.util.ResponseStructure;
@@ -30,7 +32,7 @@ public class EmployeeService {
 					HttpStatus.CREATED);
 
 			responseStructure.setStatuscode(HttpStatus.CREATED.value());
-			responseStructure.setMessage("employee saved successfully");
+			responseStructure.setMessage("employee details saved successfully");
 			responseStructure.setData(employee);
 			return entity;
 
@@ -48,12 +50,12 @@ public class EmployeeService {
 			ResponseEntity<ResponseStructure<Employee>> entity = new ResponseEntity<>(responseStructure, HttpStatus.OK);
 
 			responseStructure.setStatuscode(HttpStatus.OK.value());
-			responseStructure.setMessage("Employee details");
+			responseStructure.setMessage("Employee details fetched sucessfully");
 			responseStructure.setData(employee);
 
 			return entity;
 		} else {
-			throw new NoSuchIdFoundException();
+			throw new NoSuchIdFoundException("employee id is not found");
 		}
 	}
 
@@ -65,13 +67,13 @@ public class EmployeeService {
 			ResponseEntity<ResponseStructure<List<Employee>>> entity = new ResponseEntity<>(responseStructure,
 					HttpStatus.OK);
 
-			responseStructure.setMessage("details of employees");
+			responseStructure.setMessage("All employee details fetched sucessfully");
 			responseStructure.setStatuscode(HttpStatus.OK.value());
 			responseStructure.setData(employeeDao.getAllEmployee());
 
 			return entity;
 		} else {
-			throw new NoDataFoundException();
+			throw new NoSuchDataFoundException("Employee details is empty");
 		}
 
 	}
@@ -91,12 +93,12 @@ public class EmployeeService {
 					HttpStatus.CREATED);
 
 			responseStructure.setStatuscode(HttpStatus.CREATED.value());
-			responseStructure.setMessage("updated successfully");
+			responseStructure.setMessage("employee details updated successfully");
 			responseStructure.setData(employeeDao.updateEmployee(employee));
 
 			return entity;
 		} else {
-			throw new NoSuchIdFoundException();
+			throw new NoSuchIdFoundException("employee id is not found");
 		}
 
 	}
@@ -109,15 +111,15 @@ public class EmployeeService {
 
 			ResponseStructure<String> responseStructure = new ResponseStructure<>();
 			ResponseEntity<ResponseStructure<String>> entity = new ResponseEntity<>(responseStructure,
-					HttpStatus.NOT_FOUND);
+					HttpStatus.NO_CONTENT);
 
-			responseStructure.setStatuscode(HttpStatus.NOT_FOUND.value());
-			responseStructure.setMessage("deleted successfully");
+			responseStructure.setStatuscode(HttpStatus.NO_CONTENT.value());
+			responseStructure.setMessage("employee details deleted successfully");
 			responseStructure.setData(employeeDao.deleteEmployee(id));
 
 			return entity;
 		} else {
-			throw new NoSuchIdFoundException();
+			throw new NoSuchIdFoundException("employee id is not found");
 
 		}
 
@@ -131,12 +133,12 @@ public class EmployeeService {
 			ResponseEntity<ResponseStructure<Employee>> entity = new ResponseEntity<>(responseStructure, HttpStatus.OK);
 
 			responseStructure.setStatuscode(HttpStatus.OK.value());
-			responseStructure.setMessage("Employee details");
+			responseStructure.setMessage("Employee details fetched sucessfully based on email");
 			responseStructure.setData(employee);
 
 			return entity;
 		} else {
-			throw new NoSuchEmailFoundException();
+			throw new NoSuchEmailFoundException("email is not found");
 		}
 	}
 

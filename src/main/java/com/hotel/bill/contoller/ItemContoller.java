@@ -25,8 +25,8 @@ public class ItemContoller {
 	@Autowired
 	ItemService itemService;
 	@PostMapping("saveitem")
-	public ResponseEntity<ResponseStructure<Item>> saveItem(@RequestBody Item item) {
-		return itemService.saveItem(item);
+	public ResponseEntity<ResponseStructure<Item>> saveItem(@RequestParam int id, @RequestBody Item item) {
+		return itemService.saveItem(id,item);
 	}
 	@GetMapping("getitembyid")
 	public ResponseEntity<ResponseStructure<Item>> getItemById(@RequestParam int id) {

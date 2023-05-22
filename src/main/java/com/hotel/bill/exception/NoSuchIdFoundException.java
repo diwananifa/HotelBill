@@ -9,7 +9,6 @@ public class NoSuchIdFoundException extends RuntimeException {
 	}
 	
 	public NoSuchIdFoundException(String message) {
-	
 
 		this.message = message;
 	}
